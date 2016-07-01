@@ -1,0 +1,35 @@
+{
+  "name": "examine-self",
+  "version": "1.0.0",
+  "description": "examine yourself everyday",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.dev.js",
+    "bundle": "NODE_ENV=production webpack -c -v -p --progress --config webpack.production.config.js"
+  },
+  "keywords": ["examine"],
+  "author": "Fantasy Shao <fantasyshao@icloud.com>",
+  "license": "MIT",
+  "repository": "git@github.com:hacksunday/examine-self.git",
+  "dependencies": {
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "babel": "^6.5.2",
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "css-loader": "^0.23.1",
+    "node-sass": "^3.8.0",
+    "open-browser-webpack-plugin": "0.0.2",
+    "react-hot-loader": "^1.3.0",
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
