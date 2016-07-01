@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background-color: #f1f1f1;
+  font-family: Georgia, sans-serif;
+  color: #444;
+}
+
+.app {
+  width: 640px;
+  margin: 0 auto;
+  height: calc(100vh - 40px);
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 0 1px 4px rgba(0, 0, 0, .01);
+}
+
+.header {
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, .075);
+
+  .title {
+    margin: 0;
+    font-family: 'STKaiti', 'Kaiti', sans-serif;
+    font-weight: 100;
+  }
+
+  .desc {
+    margin: 10px 0 0 0;
+    font-size: 16px;
+  }
+}
+
+.main {
+  padding: 0 20px;
+}
+
+.add-btn {
+  color: #666;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 10px 20px;
+  background-color: white;
+  cursor: pointer;
+  transition: all .3s ease;
+  outline: none;
+  user-select: none;
+  &:hover {
+    background-color: #666;
+    color: white;
+    border: 1px solid #666;
+  }
+}
+
+.add-form {
+  z-index: 20;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+  width: 400px;
+}
+
+.mask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, .6);
+}
