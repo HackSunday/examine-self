@@ -6,6 +6,12 @@
 > In intercourse with my friends, have I always been true to my word?
 > Have I failed to repeat the precepts that have been handed down to me?
 
+## Feature
+
+- Add target easily
+- Track your targets in a list
+- Store data locally
+
 ## Develop
 
 1. Clone the repository: `git clone git@github.com:HackSunday/examine-self.git`
@@ -15,6 +21,12 @@
 ---
 
 - Run `npm run bunlde` to get the bundled file
+
+## Screeshot
+
+<img src="./screenshot/ex.png" width="30%" />
+<img src="./screenshot/ex2.png" width="30%" />
+<img src="./screenshot/ex3.png" width="30%" />
 
 ## License
 
