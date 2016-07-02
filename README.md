@@ -1,4 +1,4 @@
-Examine Self
+<img src="./src/logo.png" width="100" />
 ---
 
 > Master Tseng said, Every day I examine myself on these three points:

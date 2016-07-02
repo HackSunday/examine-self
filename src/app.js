@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import update from 'react/lib/update'
 import './style.scss'
+import logo from 'file?name=[sha512:hash:base64:7].[ext]!./logo.png'
 
 const STORE_KEY = 'EXAMINE_YOURSELF'
 
@@ -29,8 +30,10 @@ let App = React.createClass({
     return (
       <div className='app'>
         <header className='header'>
-          <h1 className='title'>吾日三省吾身</h1>
-          <p className='desc'>Learn to examine yourself every single day.</p>
+          <h1 className='title'>
+            <img src={logo} alt="logo" />
+          </h1>
+          <p className='desc'>吾日三省吾身。 <br /> Learn to examine yourself every single day.</p>
         </header>
         <main className='main'>
           {data.length ?
