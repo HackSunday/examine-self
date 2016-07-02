@@ -18,7 +18,7 @@ let App = React.createClass({
 
     if (data) {
       this.setState({
-        data: data
+        data: JSON.parse(data)
       })
     }
   },
@@ -34,15 +34,18 @@ let App = React.createClass({
         </header>
         <main className='main'>
           {data.length ?
-            <ul>
-              {data.map((item, index) => {
-                return (
-                  <li key={index}>
-                    {item['content']}
-                  </li>
-                )
-              })}
-            </ul> :
+            <div style={{ paddingTop: '20px' }}>
+              <button className='add-btn' onClick={this._toggleAddForm}>ADD</button>
+              <ul>
+                {data.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      {item['content']}
+                    </li>
+                  )
+                })}
+              </ul>
+            </div> :
             <div>
               <p>How about add something to examine yourself?</p>
               <button className='add-btn' onClick={this._toggleAddForm}>ADD</button>
@@ -65,7 +68,7 @@ let App = React.createClass({
             alignItems: 'center',
             borderBottom: '1px solid rgba(0, 0, 0, .075)'
           }}>
-          <p style={{ margin: 0 }}>What to you wanna add?</p>
+          <p style={{ margin: 0 }}>What do you wanna add?</p>
           <span
             style={{ cursor: 'pointer', color: '#777' }}
             onClick={() => {
@@ -92,7 +95,9 @@ let App = React.createClass({
               borderRadius: '4px',
               border: '1px solid #e2e2e2'
             }} />
-          <button className="add-btn">OK</button>
+          <button
+            className='add-btn'
+            onClick={this._add}>OK</button>
         </div>
       </div>
     )
@@ -105,15 +110,44 @@ let App = React.createClass({
   },
 
   _add () {
+    let content = this.refs.content.value.trim()
 
+    if (!content.length) return
+
+    let data = {
+      id: this.state.data.length + 1,
+      content: content,
+      streak: 0,
+      lastCheckTime: '',
+      createTime: this._format(new Date())
+    };
+
+    this.setState(update(this.state, {
+      data: {
+        $push: [data]
+      }
+    }), () => {
+
+      localStorage.setItem(STORE_KEY, JSON.stringify(this.state.data));
+
+      this.setState({
+        adding: false
+      })
+
+      this.refs.content.value = ''
+    })
   },
 
   _update () {
 
   },
 
-  _format () {
+  _format (date) {
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
 
+    return `${year}-${month > 10 ? month : '0' + month}-${day > 10 ? day : '0' + day}`
   }
 })
 
