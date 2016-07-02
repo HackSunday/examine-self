@@ -37,20 +37,14 @@ let App = React.createClass({
         </header>
         <main className='main'>
           {data.length ?
-            <div style={{ paddingTop: '20px' }}>
+            <div style={{ paddingTop: '2rem' }}>
               <button className='add-btn' onClick={this._toggleAddForm}>ADD</button>
-              <ul>
-                {data.map((item, index) => {
-                  return (
-                    <li key={index}>
-                      {item['content']}
-                    </li>
-                  )
-                })}
+              <ul className='list'>
+                {data.map((item, index) => this._renderItem(item, index))}
               </ul>
             </div> :
             <div>
-              <p>How about add something to examine yourself?</p>
+              <p style={{ fontSize: '1.4rem' }}>How about add something to examine yourself?</p>
               <button className='add-btn' onClick={this._toggleAddForm}>ADD</button>
             </div>
           }
@@ -60,12 +54,45 @@ let App = React.createClass({
     )
   },
 
+  _renderItem (item, index) {
+    let currentDate = this._format(new Date())
+    let checkedToday = currentDate === item['lastCheckTime']
+    let notCheckDays = 0
+
+    // NOT Checked ever created
+    if (!item['lastCheckTime'].length) {
+      notCheckDays = new Date() - new Date(item['createTime'])
+    } else {
+      notCheckDays = new Date() - new Date(item['lastCheckTime'])
+    }
+
+    notCheckDays = Math.round(notCheckDays / 60 / 60 / 1000 / 24)
+
+    return (
+      <li key={index}>
+        <p className='content'>{item['content']}</p>
+        {checkedToday ?
+          <div>{`Streak: ${item['streak']} ${item['streak'] > 1 ? 'days' : 'day'}`}</div> :
+          <div className='actions'>
+            <p style={{ fontSize: '1.2rem', color: '#666' }}>
+              Idle for <span style={{ color: '#333', fontFamily: 'monospace, consolas' }}>{notCheckDays}</span> days
+            </p>
+            <span
+              className='checkbox'
+              onClick={() => {
+                this._update(item, index)
+              }}>✓</span>
+          </div>}
+      </li>
+    )
+  },
+
   _renderForm () {
     return (
       <div className='add-form'>
         <div
           style={{
-            padding: '10px 0',
+            padding: '1rem 0',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -73,7 +100,14 @@ let App = React.createClass({
           }}>
           <p style={{ margin: 0 }}>What do you wanna add?</p>
           <span
-            style={{ cursor: 'pointer', color: '#777' }}
+            style={{
+              cursor: 'pointer',
+              color: '#777',
+              height: '3rem',
+              width: '3rem',
+              lineHeight: '3rem',
+              textAlign: 'center'
+            }}
             onClick={() => {
               this.setState({
                 adding: false
@@ -84,16 +118,16 @@ let App = React.createClass({
           style={{
             display: 'flex',
             flexDirection: 'column',
-            padding: '10px 0'
+            padding: '1rem 0'
           }}>
           <input
             type='text'
             ref='content'
             style={{
-              padding: '10px 5px',
-              marginBottom: '20px',
+              padding: '1rem .5rem',
+              marginBottom: '2rem',
               outline: 'none',
-              fontSize: '16px',
+              fontSize: '1.6rem',
               width: '100%',
               borderRadius: '4px',
               border: '1px solid #e2e2e2'
@@ -141,7 +175,24 @@ let App = React.createClass({
     })
   },
 
-  _update () {
+  _update (item, index) {
+    let modified = update(item, {
+      $merge: {
+        lastCheckTime: this._format(new Date()),
+        streak: item['streak'] + 1
+      }
+    })
+
+    this.setState(update(this.state, {
+      data: {
+        $splice: [
+          [index, 1],
+          [index, 0, modified]
+        ]
+      }
+    }), () => {
+      localStorage.setItem(STORE_KEY, JSON.stringify(this.state.data))
+    })
 
   },
 
