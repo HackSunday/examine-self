@@ -17,8 +17,21 @@ let App = React.createClass({
     let data = localStorage.getItem(STORE_KEY)
 
     if (data) {
+      let parsedData = JSON.parse(data)
+
+      parsedData.forEach(d => {
+        let currentDate = new Date()
+        let lastCheckTime = new Date(d['lastCheckTime'])
+
+        if ((currentDate - lastCheckTime) / 60 / 60 / 1000 / 24 > 1) {
+          d['streak'] = 0
+        }
+      })
+
       this.setState({
-        data: JSON.parse(data)
+        data: parsedData
+      }, () => {
+        localStorage.setItem(STORE_KEY, JSON.stringify(parsedData))
       })
     }
   },
@@ -65,7 +78,7 @@ let App = React.createClass({
       notCheckDays = new Date() - new Date(item['lastCheckTime'])
     }
 
-    notCheckDays = Math.round(notCheckDays / 60 / 60 / 1000 / 24)
+    notCheckDays = Math.round(notCheckDays / 60 / 60 / 1000 / 24) + 1
 
     return (
       <li key={index}>
@@ -79,7 +92,10 @@ let App = React.createClass({
             <span
               className='checkbox'
               onClick={() => {
-                this._update(item, index)
+                this._update(item, {
+                  lastCheckTime: this._format(new Date()),
+                  streak: item['streak'] + 1
+                }, index)
               }}>✓</span>
           </div>}
       </li>
@@ -174,19 +190,14 @@ let App = React.createClass({
     })
   },
 
-  _update (item, index) {
-    let modified = update(item, {
-      $merge: {
-        lastCheckTime: this._format(new Date()),
-        streak: item['streak'] + 1
-      }
-    })
-
+  _update (item, modified, index) {
     this.setState(update(this.state, {
       data: {
         $splice: [
           [index, 1],
-          [index, 0, modified]
+          [index, 0, update(item, {
+            $merge: modified
+          })]
         ]
       }
     }), () => {
